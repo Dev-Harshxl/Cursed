@@ -1,57 +1,24 @@
-name: CI/CD Pipeline
+name: CI/CD
 
 on:
   push:
     branches:
-      - master   # runs only when you push/merge to main
+      - main
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout code
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      # Setup .NET
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '8.0.x'
+      # TEMP: Skip .NET and Angular builds until project exists
 
-      # Backend build & test
-      - name: Restore dependencies
-        run: dotnet restore src/backend/Company.Product.Api
-
-      - name: Build backend
-        run: dotnet build src/backend/Company.Product.Api --configuration Release --no-restore
-
-      - name: Test backend
-        run: dotnet test tests/Company.Product.Tests --no-build --verbosity normal
-
-      # Frontend build
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install frontend deps
-        run: |
-          cd src/frontend/app
-          npm ci
-
-      - name: Build frontend
-        run: |
-          cd src/frontend/app
-          npm run build -- --configuration production
-
-      # Deploy via FTP to Hostinger
       - name: Deploy to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./
+          local-dir: ./          # will upload index.html
           server-dir: /public_html/
