@@ -3,7 +3,7 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main   # runs only when you push/merge to main
+      - master   # runs only when you push/merge to main
 
 jobs:
   build-and-deploy:
