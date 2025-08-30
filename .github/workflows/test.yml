@@ -1,16 +1,13 @@
 name: Test Workflow
 
-on:
-  push:
-    branches:
-      - master
+on: [push]
 
 jobs:
-  test-job:
+  hello-job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Say Hello
-        run: echo "✅ GitHub Actions is working!"
+      - name: Hello message
+        run: echo "✅ GitHub Actions is alive!"
